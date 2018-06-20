@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
+const config = require('../config/config')
 
 mongoose.Promise = global.Promise
-mongoose.connect(process.env.MONGO_URI, { useMongoClient: true })
+mongoose.connect(config.MONGODB_URI, { useMongoClient: true})
 
 module.exports = { mongoose }
