@@ -1,7 +1,7 @@
 const Agenda = require('agenda');
 const { MongoClient } = require('mongodb');
 
-var connectionString = "mongodb://localhost:27017/SMS_Hub";
+var connectionString = "mongodb://127.0.0.1:27017/SMS_Hub";
 var agenda = new Agenda({ db: { address: connectionString, collection: 'scheduled_messages' } });
 
 var scheduled = true
