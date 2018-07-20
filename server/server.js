@@ -1,4 +1,5 @@
-const config = require('./config/config');
+require('./config/config');
+
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -10,7 +11,7 @@ var { User } = require('./models/user');
 var { authenticate } = require('./middleware/auth');
 
 var app = express();
-const port = process.env.PORT || 3005;
+const port = process.env.PORT;
 
 app.use(bodyParser.json())
 
@@ -145,7 +146,7 @@ app.delete('/users/me/token', authenticate, (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`started on port ${port} on ${config.env}`);
-})
+    console.log(`ToDo API started up on port ${port} `+ `in ${process.env.NODE_ENV} mode.`);
+});
 
-module.exports = { app }
+module.exports = { app };

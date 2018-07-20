@@ -1,15 +1,10 @@
 var env = process.env.NODE_ENV || 'dev';
 
-const dev =  {
-    PORT:3005,
-    MONGODB_URI:'mongodb://127.0.0.1:27017/ToDoApp',
-    env: env
-}
+if (env === 'dev' || env === 'test') {
+    var config = require('./config.json');
+    var envConfig = config[env];
 
-const test = {
-    PORT : 3005,
-    MONGODB_URI : 'mongodb://127.0.0.1:27017/ToDoAppTest',
-    env: env
+    Object.keys(envConfig).forEach((key) => {
+        process.env[key] = envConfig[key];
+    });
 }
-
-module.exports = env === 'dev' ? dev : test;
