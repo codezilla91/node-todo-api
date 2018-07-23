@@ -32,7 +32,7 @@ app.get('/todos', authenticate, (req, res) => {
     Todo.find({
         _creator: req.user._id
     }).then((todos) => {
-        res.send({ todos });
+        res.send({todos});
     }, (e) => {
         res.status(400).send(e);
     })
@@ -81,7 +81,6 @@ app.delete('/todos/:id', authenticate, (req, res) => {
 
 app.patch('/todos/:id', authenticate, (req, res) => {
     var id = req.params.id;
-
     var body = _.pick(req.body, ['text', 'completed']);
 
     if (!ObjectID.isValid(id)) {
@@ -97,12 +96,12 @@ app.patch('/todos/:id', authenticate, (req, res) => {
 
     Todo.findOneAndUpdate({
         _id: id,
-        _creator: req.user._id    
+        _creator: req.user._id
     }, { $set: body }, { new: true }).then((todo) => {
         if (!todo) {
             return res.status(404).send();
         }
-        res.send({ todo })
+        res.send({todo});
     }).catch((e) => {
         res.status(400).send();
     })
@@ -129,24 +128,25 @@ app.post('/users/login', (req, res) => {
     var body = _.pick(req.body, ['email', 'password']);
 
     User.findByCredentials(body.email, body.password).then((user) => {
-        user.generateAuthToken().then((token) => {
+        return user.generateAuthToken().then((token) => {
             res.header('x-auth', token).send(user);
         })
     }).catch((e) => {
         res.status(400).send();
-    })
-})
+    });
+});
 
 app.delete('/users/me/token', authenticate, (req, res) => {
     req.user.removeToken(req.token).then(() => {
         res.status(200).send();
     }, () => {
         res.status(400).send();
-    })
-})
+    });
+});
+
 
 app.listen(port, () => {
-    console.log(`ToDo API started up on port ${port} `+ `in ${process.env.NODE_ENV} mode.`);
+    console.log(`ToDo API started up on port ${port} ` + `in ${process.env.NODE_ENV} mode.`);
 });
 
 module.exports = { app };
